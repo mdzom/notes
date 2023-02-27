@@ -7,8 +7,18 @@
 
 import UIKit
 
-enum ColorMark {
-    case clear
+enum ColorMark : String {
+//    case clear = "clear"
+//    case yellow = "yellow"
+//    case green = "green"
+//    case red = "red"
+//    case purple = "purple"
+//    case orange = "orange"
+//    case gray = "gray"
+//    case blue = "blue"
+    
+    
+    case clear 
     case yellow
     case green
     case red

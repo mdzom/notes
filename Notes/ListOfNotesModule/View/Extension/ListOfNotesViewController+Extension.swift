@@ -22,6 +22,11 @@ extension ListOfNotesViewController: UITableViewDataSource {
         }
         let cellViewModel = viewModel.createCellViewModel(for: indexPath)
         cell.viewModel = cellViewModel
+        
+        
+        //print("indexpath: \(indexPath)")
+        
+        
         return cell
     }
     
@@ -33,30 +38,26 @@ extension ListOfNotesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.selectedBackgroundView = SelectedCellView()
-        tableView.deselectRow(at: indexPath, animated: true)// снимает выделение ячейки
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        //        MARK: изменить
-        let controller = NoteViewController()
+        viewModel?.selectRow(at: indexPath)
+        guard let controller = viewModel?.viewModelForSelectedRow() else { return }
         navigationController?.pushViewController(controller, animated: true)
-        
-        
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
-            // обработчик для удаления ячейки
-            
-            
-            
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] (_, _, completion) in
+            self?.viewModel?.selectRow(at: indexPath)
+            self?.viewModel?.deleteNote(completion: {
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            })
             completion(true)
         }
-        
         deleteAction.image = UIImage(systemName: "trash")
         deleteAction.backgroundColor = .orange
         
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         configuration.performsFirstActionWithFullSwipe = false
-        
         return configuration
     }
 }

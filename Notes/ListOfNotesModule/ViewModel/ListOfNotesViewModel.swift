@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class ListOfNoteViewModel: ListOfNotesViewModelProtocol {
     
@@ -13,28 +14,45 @@ class ListOfNoteViewModel: ListOfNotesViewModelProtocol {
     
     private var selectedIndexPath: IndexPath?
     
-    //    private var listOfNotes = [NoteModel]()
-    private var listOfNotes = [
-        NoteModel(text: "Важно помнить, что путь к успеху не всегда прямой.\nИногда нам нужно идти по извилистой тропинке, чтобы достичь цели.", colorMark: .blue),
-        NoteModel(text: "Жизнь — это не ожидание, когда буря пройдет, а учение танцевать под дождем.", colorMark: .red),
-        NoteModel(text: "Лучший способ предсказать будущее — создать его самому.", colorMark: .red),
-        NoteModel(text: "Иногда ты должен закрывать двери, чтобы открыть окна.\nИногда же нужно просто выбросить стены и дать свободу своим мечтам.", colorMark: .clear),
-        NoteModel(text: "Мир состоит из двух типов людей: тех, кто живет мечтой, и тех, кто следует за своими мечтами.", colorMark: .clear),
-        NoteModel(text: "Успех — это не окончательный результат.\nЭто непрерывный процесс, требующий постоянных усилий.", colorMark: .clear),
-        NoteModel(text: "Не позволяйте неудачам определять ваше будущее.\nВместо этого используйте их как возможность расти и учиться на своих ошибках.", colorMark: .orange)
-    ]
+    
+    //    //del:!!!!
+    //    private var listOfNotes: [NoteModel] = {
+    //        let  note1 = NoteModel()
+    //        note1.text = "Важно помнить, что путь к успеху не всегда прямой.\nИногда нам нужно идти по извилистой тропинке, чтобы достичь цели."
+    //        note1.colorMark = .blue
+    //        let  note2 = NoteModel()
+    //        note2.text = "Жизнь — это не ожидание, когда буря пройдет, а учение танцевать под дождем."
+    //        note2.colorMark = .red
+    //        let  note3 = NoteModel()
+    //        note3.text = "Лучший способ предсказать будущее — создать его самому."
+    //        note3.colorMark = .red
+    //        let  note4 = NoteModel()
+    //        note4.text = "Иногда ты должен закрывать двери, чтобы открыть окна.\nИногда же нужно просто выбросить стены и дать свободу своим мечтам."
+    //        let  note5 = NoteModel()
+    //        note5.text = "Мир состоит из двух типов людей: тех, кто живет мечтой, и тех, кто следует за своими мечтами."
+    //        let  note6 = NoteModel()
+    //        note6.text = "Успех — это не окончательный результат.\nЭто непрерывный процесс, требующий постоянных усилий."
+    //        let  note7 = NoteModel()
+    //        note7.text = "Не позволяйте неудачам определять ваше будущее.\nВместо этого используйте их как возможность расти и учиться на своих ошибках."
+    //        note7.colorMark = .orange
+    //
+    //        return [note1, note2, note3, note4, note5, note6, note7]
+    //    }()
     
     
     
     
-    //    private var listOfNotes: Results<NoteModel> {
-    //        realm.objects(NoteModel.self)
-    //    }
     
+    private var listOfNotes: Results<NoteModel> = {
+        var value = realm.objects(NoteModel.self)
+        if value.isEmpty {
+            let firstNote = NoteModel()
+            StorageManager.saveNote(firstNote.createStartNote())
+        }
+        value = value.sorted(byKeyPath: "date", ascending: false)
+        return value
+    }()
     
-    //    private var expenseCategory: Results<ExpenseCategory> {
-    //        realm.objects(ExpenseCategory.self)
-    //    }
     
     
     func numberOfRows() -> Int {
@@ -46,30 +64,39 @@ class ListOfNoteViewModel: ListOfNotesViewModelProtocol {
         return NoteCellViewModel(note: note)
     }
     
-    
     func viewModelForSelectedRow() -> NoteViewController? {
         guard let selectedIndexPath else { return nil }
         let note = listOfNotes[selectedIndexPath.row]
-        let viewController = NoteViewController()
-        //        viewController.viewModel = NoteViewModel(note: note)
-        //        viewController.hidesBottomBarWhenPushed = true
-        return viewController
+        let viewModel = NoteViewModel(note: note)
+        let controller = NoteViewController()
+        controller.viewModel = viewModel
+        return controller
     }
-    
     
     func selectRow(at indexPath: IndexPath) {
         selectedIndexPath = indexPath
     }
     
-    //    func addNote(text: String, completion: @escaping () -> ()) {
-    ////        let emptyList = List<Expense>()
-    ////        let newCategory = ExpenseCategory(category: category,
-    ////                                          expence: emptyList)
-    ////        try! realm.write({
-    ////            realm.add(newCategory)
-    ////        })
-    ////        completion()
-    //    }
+    func addNote(completion: @escaping (NoteViewController) -> ()) {
+        let newNote = NoteModel()
+        StorageManager.saveNote(newNote)
+        let viewModel = NoteViewModel(note: newNote)
+        let controller = NoteViewController()
+        controller.viewModel = viewModel
+        completion(controller)
+    }
     
+    func deleteNote(completion: @escaping () -> ()) {
+        guard let selectedIndexPath else { return }
+        let note = listOfNotes[selectedIndexPath.row]
+        StorageManager.deleteNote(note)
+        completion()
+    }
     
+//    func deleteEmptyNote(completion: @escaping () -> ()) {
+//        guard let first = listOfNotes.first else { return }
+//        if first.text == "" {
+//            listOfNotes.removeFirst()
+//        }
+//    }
 }

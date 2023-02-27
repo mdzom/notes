@@ -12,7 +12,9 @@ protocol ListOfNotesViewModelProtocol: AnyObject {
 
     func numberOfRows() -> Int
     func createCellViewModel(for indexPath: IndexPath) -> NoteCellViewModelProtocol?
+//    func viewModelForSelectedRow() -> NoteViewModelProtocol?
     func viewModelForSelectedRow() -> NoteViewController?
     func selectRow(at indexPath: IndexPath)
-//    func addNote(text: String, completion: @escaping () -> ())
+    func addNote(completion: @escaping (NoteViewController) -> ())
+    func deleteNote(completion: @escaping () -> ())
 }

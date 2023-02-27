@@ -37,9 +37,11 @@ class ListOfNotesViewController: UIViewController {
         return button
     }()
     
-//    override func viewDidLayoutSubviews() {
-//        print("hhgg")
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("hhgg")
+        tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,8 +73,9 @@ class ListOfNotesViewController: UIViewController {
     }
     
     @IBAction private func addNote() {
-        //        MARK: изменить
-        let controller = NoteViewController()
-        navigationController?.pushViewController(controller, animated: true)
+        viewModel?.addNote(completion: { [weak self] controller in
+            self?.tableView.reloadData()
+            self?.navigationController?.pushViewController(controller, animated: true)
+        })
     }
 }

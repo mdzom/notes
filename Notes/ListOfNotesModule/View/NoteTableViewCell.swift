@@ -16,7 +16,7 @@ class NoteTableViewCell: UITableViewCell {
             mainTextLabel.text = viewModel?.text
         }
     }
-    
+//    MARK: добавить готовое view!!!!!
     private lazy var borderView: UIView = {
         let borderColor = Constant.Colors.gray.cgColor
         let view = UIView()
@@ -30,26 +30,17 @@ class NoteTableViewCell: UITableViewCell {
     private lazy var colorMarkView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 4
-        
-//view.backgroundColor = .red
-        
         return view
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        
-//label.text = "Object"
-        
         label.textColor = Constant.Colors.black
         return label
     }()
     
     private lazy var mainTextLabel: UILabel = {
         let label = UILabel()
-        
-//label.text = "text"
-        
         label.textColor = Constant.Colors.gray
         return label
     }()
@@ -82,7 +73,6 @@ class NoteTableViewCell: UITableViewCell {
     }
     
     private func addConstraint() {
-        
         borderView.translatesAutoresizingMaskIntoConstraints = false
         borderView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         borderView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16).isActive = true
