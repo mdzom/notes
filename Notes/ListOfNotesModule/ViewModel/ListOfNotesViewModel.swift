@@ -13,47 +13,18 @@ class ListOfNoteViewModel: ListOfNotesViewModelProtocol {
     var cellIdentifier = "kjgh3s456fjfhDfhgEH"
     
     private var selectedIndexPath: IndexPath?
+    private let firstRun = "keyBool"
     
-    
-    //    //del:!!!!
-    //    private var listOfNotes: [NoteModel] = {
-    //        let  note1 = NoteModel()
-    //        note1.text = "Важно помнить, что путь к успеху не всегда прямой.\nИногда нам нужно идти по извилистой тропинке, чтобы достичь цели."
-    //        note1.colorMark = .blue
-    //        let  note2 = NoteModel()
-    //        note2.text = "Жизнь — это не ожидание, когда буря пройдет, а учение танцевать под дождем."
-    //        note2.colorMark = .red
-    //        let  note3 = NoteModel()
-    //        note3.text = "Лучший способ предсказать будущее — создать его самому."
-    //        note3.colorMark = .red
-    //        let  note4 = NoteModel()
-    //        note4.text = "Иногда ты должен закрывать двери, чтобы открыть окна.\nИногда же нужно просто выбросить стены и дать свободу своим мечтам."
-    //        let  note5 = NoteModel()
-    //        note5.text = "Мир состоит из двух типов людей: тех, кто живет мечтой, и тех, кто следует за своими мечтами."
-    //        let  note6 = NoteModel()
-    //        note6.text = "Успех — это не окончательный результат.\nЭто непрерывный процесс, требующий постоянных усилий."
-    //        let  note7 = NoteModel()
-    //        note7.text = "Не позволяйте неудачам определять ваше будущее.\nВместо этого используйте их как возможность расти и учиться на своих ошибках."
-    //        note7.colorMark = .orange
-    //
-    //        return [note1, note2, note3, note4, note5, note6, note7]
-    //    }()
-    
-    
-    
-    
-    
-    private var listOfNotes: Results<NoteModel> = {
+    private lazy var listOfNotes: Results<NoteModel> = {
         var value = realm.objects(NoteModel.self)
-        if value.isEmpty {
-            let firstNote = NoteModel()
-            StorageManager.saveNote(firstNote.createStartNote())
+        if !firstRunCheck() {
+            let firstNote = createAWelcomeNote()
+            StorageManager.saveNote(firstNote)
+            UserDefaults.standard.set(true, forKey: firstRun)
         }
         value = value.sorted(byKeyPath: "date", ascending: false)
         return value
     }()
-    
-    
     
     func numberOfRows() -> Int {
         listOfNotes.count
@@ -93,10 +64,25 @@ class ListOfNoteViewModel: ListOfNotesViewModelProtocol {
         completion()
     }
     
-//    func deleteEmptyNote(completion: @escaping () -> ()) {
-//        guard let first = listOfNotes.first else { return }
-//        if first.text == "" {
-//            listOfNotes.removeFirst()
-//        }
-//    }
+    func lastNoteCheck(completion: @escaping (IndexPath) -> ()) {
+        guard let first = listOfNotes.first else { return }
+        if first.text == "" {
+            let indexPath = IndexPath(row: 0, section: 0)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                StorageManager.deleteNote(first)
+                completion(indexPath)
+            }
+        }
+    }
+    
+    private func firstRunCheck() -> Bool {
+        UserDefaults.standard.bool(forKey: firstRun)
+    }
+    
+    private func createAWelcomeNote() -> NoteModel {
+        let note = NoteModel()
+        note.text = "Добро пожаловать в приложение заметок!\nЗдесь вы можете сохранять свои идеи, планы, списки покупок и многое другое.\nПросто нажмите на кнопку "+" в правом верхнем углу, чтобы создать новую заметку.\nВы также можете нажать на любую из существующих заметок, чтобы отредактировать ее или удалить.\nНадеемся, что вы найдете это приложение полезным и удобным для использования!\n"
+        note.colorMark = .yellow
+        return note
+    }
 }

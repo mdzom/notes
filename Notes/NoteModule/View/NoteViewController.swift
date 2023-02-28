@@ -21,8 +21,6 @@ class NoteViewController: UIViewController {
     private lazy var textView: UITextView = {
         let view = UITextView()
         
-view.backgroundColor = .systemPink
-        
         view.font = UIFont(name: "Copperplate-Light", size: 20)
         return view
     }()

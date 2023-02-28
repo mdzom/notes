@@ -39,8 +39,10 @@ class ListOfNotesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("hhgg")
         tableView.reloadData()
+        viewModel?.lastNoteCheck { [weak self] indexPath in
+            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
     
     override func viewDidLoad() {

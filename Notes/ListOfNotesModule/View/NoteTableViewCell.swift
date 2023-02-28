@@ -84,8 +84,7 @@ class NoteTableViewCell: UITableViewCell {
         colorMarkView.leftAnchor.constraint(equalTo: borderView.leftAnchor, constant: 8).isActive = true
         colorMarkView.bottomAnchor.constraint(equalTo: borderView.bottomAnchor, constant: -8).isActive = true
         colorMarkView.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        
-        
+    
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.topAnchor.constraint(equalTo: borderView.topAnchor, constant: 8).isActive = true
         stackView.leftAnchor.constraint(equalTo: colorMarkView.rightAnchor, constant: 8).isActive = true

@@ -22,19 +22,13 @@ extension ListOfNotesViewController: UITableViewDataSource {
         }
         let cellViewModel = viewModel.createCellViewModel(for: indexPath)
         cell.viewModel = cellViewModel
-        
-        
-        //print("indexpath: \(indexPath)")
-        
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
     }
-    
-    //    Действия по тапу по ячейки:
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.selectedBackgroundView = SelectedCellView()
@@ -46,7 +40,8 @@ extension ListOfNotesViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] (_, _, completion) in
+        let deleteAction = UIContextualAction(style: .destructive,
+                                              title: nil) { [weak self] (_, _, completion) in
             self?.viewModel?.selectRow(at: indexPath)
             self?.viewModel?.deleteNote(completion: {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
