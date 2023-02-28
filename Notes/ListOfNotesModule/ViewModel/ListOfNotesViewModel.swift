@@ -68,7 +68,7 @@ class ListOfNoteViewModel: ListOfNotesViewModelProtocol {
         guard let first = listOfNotes.first else { return }
         if first.text == "" {
             let indexPath = IndexPath(row: 0, section: 0)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 StorageManager.deleteNote(first)
                 completion(indexPath)
             }

@@ -27,6 +27,7 @@
 		7814CB0529AB1FE700469C41 /* NoteCellViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7814CB0429AB1FE700469C41 /* NoteCellViewModelProtocol.swift */; };
 		7814CB0B29AB25DD00469C41 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7814CB0A29AB25DD00469C41 /* NoteViewController.swift */; };
 		7814CB0D29AB2F3900469C41 /* SelectedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7814CB0C29AB2F3900469C41 /* SelectedCellView.swift */; };
+		78E0D2FF29ADD963008EAF61 /* NoteViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E0D2FE29ADD963008EAF61 /* NoteViewController+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		7814CB0429AB1FE700469C41 /* NoteCellViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCellViewModelProtocol.swift; sourceTree = "<group>"; };
 		7814CB0A29AB25DD00469C41 /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		7814CB0C29AB2F3900469C41 /* SelectedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedCellView.swift; sourceTree = "<group>"; };
+		78E0D2FE29ADD963008EAF61 /* NoteViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteViewController+Extension.swift"; sourceTree = "<group>"; };
 		974C3CC779554E46F7DAB1E8 /* Pods_Notes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Notes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B578F9D2871332AE8E83DB64 /* Pods-Notes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notes.debug.xcconfig"; path = "Target Support Files/Pods-Notes/Pods-Notes.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				7814CB0A29AB25DD00469C41 /* NoteViewController.swift */,
+				78E0D2FD29ADD93F008EAF61 /* Extension */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -216,6 +219,14 @@
 			children = (
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		78E0D2FD29ADD93F008EAF61 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				78E0D2FE29ADD963008EAF61 /* NoteViewController+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,6 +343,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78E0D2FF29ADD963008EAF61 /* NoteViewController+Extension.swift in Sources */,
 				7802E44E29AB8FF100C38344 /* NoteViewModel.swift in Sources */,
 				7814CB0029AB1F5700469C41 /* NoteCellViewModel.swift in Sources */,
 				7814CAFE29AB1F3000469C41 /* ListOfNotesViewModel.swift in Sources */,
