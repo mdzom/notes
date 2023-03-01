@@ -16,6 +16,10 @@ class NoteViewModel: NoteViewModelProtocol {
         note.text
     }
     
+    var color: ColorMark {
+        note.colorMark
+    }
+    
     init(note: NoteModel) {
         self.note = note
     }
@@ -23,6 +27,13 @@ class NoteViewModel: NoteViewModelProtocol {
     func saveNote(text: String) {
         try! realm.write {
             note.text = text
+            note.date = Date()
+        }
+    }
+    
+    func saveColorMark(_ mark: ColorMark) {
+        try! realm.write {
+            note.colorMark = mark
             note.date = Date()
         }
     }

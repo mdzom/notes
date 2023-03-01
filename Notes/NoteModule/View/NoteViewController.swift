@@ -15,6 +15,7 @@ class NoteViewController: UIViewController {
     var viewModel: NoteViewModelProtocol? {
         willSet(viewModel) {
             textView.text = viewModel?.text
+            colorSelectionButton.backgroundColor = viewModel?.color.getColor()
         }
     }
     
@@ -37,6 +38,14 @@ class NoteViewController: UIViewController {
         return button
     }()
     
+    private lazy var colorSelectionButton: UIButton = {
+        let button = createColorPickerButton(color: .clear)
+        button.addTarget(self,
+                         action: #selector(pressButtonSelectColor),
+                         for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var textView: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
@@ -44,6 +53,16 @@ class NoteViewController: UIViewController {
         textView.textColor = Constant.Colors.black
         textView.delegate = self
         return textView
+    }()
+    
+    private lazy var viewWithChoiceOfLabelColor: UIView = {
+        let view = ViewWithChoiceOfLabelColor()
+        view.buttonAction = { [weak self] mark in
+            self?.selectColor(mark)
+        }
+        view.isHidden = true
+        view.alpha = 0
+        return view
     }()
     
     override func viewDidLoad() {
@@ -60,10 +79,14 @@ class NoteViewController: UIViewController {
     private func addToNavigationItem() {
         navigationItem.rightBarButtonItem = rightBarButton
         navigationItem.leftBarButtonItem = leftBarButton
+        
+        let barButton = UIBarButtonItem(customView: colorSelectionButton)
+        navigationItem.titleView = barButton.customView
     }
     
     private func addToView() {
         view.addSubview(textView)
+        view.addSubview(viewWithChoiceOfLabelColor)
     }
     
     private func  addConstraint() {
@@ -74,6 +97,10 @@ class NoteViewController: UIViewController {
         textView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
         textView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
         textView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
+        
+        viewWithChoiceOfLabelColor.translatesAutoresizingMaskIntoConstraints = false
+        viewWithChoiceOfLabelColor.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        viewWithChoiceOfLabelColor.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 10).isActive = true
     }
     
     private func saveNote() {
@@ -110,27 +137,32 @@ class NoteViewController: UIViewController {
               let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
         }
-        
         if notification.name == UIResponder.keyboardWillHideNotification {
             textView.contentInset = UIEdgeInsets.zero
-
+            
             rightBarButton.isEnabled = false
             rightBarButton.tintColor = .clear
-            
         } else {
             textView.contentInset = UIEdgeInsets(top: 0, left: 0,
                                                  bottom: keyboardFrame.height,
                                                  right: 0)
             textView.scrollIndicatorInsets = textView.contentInset
-            print("показать")
             
-            
-                    
             rightBarButton.isEnabled = true
             rightBarButton.tintColor = Constant.Colors.gray
-            
         }
         textView.scrollRangeToVisible(textView.selectedRange)
+    }
+    
+    private func selectColor(_ mark: ColorMark) {
+        colorSelectionButton.backgroundColor = mark.getColor()
+        
+        viewModel?.saveColorMark(mark)
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.viewWithChoiceOfLabelColor.alpha = 0
+        }
+        viewWithChoiceOfLabelColor.isHidden = true
     }
     
     @IBAction private func hideKeyboard() {
@@ -139,5 +171,12 @@ class NoteViewController: UIViewController {
     
     @IBAction private func pushBackButton() {
         navigationController?.popToRootViewController(animated: true)
+    }
+    
+    @IBAction private func pressButtonSelectColor() {
+        viewWithChoiceOfLabelColor.isHidden = false
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.viewWithChoiceOfLabelColor.alpha = 1
+        }
     }
 }

@@ -9,6 +9,8 @@ import Foundation
 
 protocol NoteViewModelProtocol: AnyObject {
     var text: String { get }
+    var color: ColorMark { get }
     
     func saveNote(text: String)
+    func saveColorMark(_ mark: ColorMark)
 }
