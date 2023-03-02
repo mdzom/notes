@@ -19,6 +19,12 @@ class NoteViewController: UIViewController {
         }
     }
     
+    private lazy var swipeToRightRecognizer: UISwipeGestureRecognizer = {
+        let recognizer = UISwipeGestureRecognizer(target: self, action: #selector(pushBackButton))
+        recognizer.direction = .right
+        return recognizer
+    }()
+    
     private lazy var rightBarButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Готово",
                                      style: .plain,
@@ -87,6 +93,7 @@ class NoteViewController: UIViewController {
     private func addToView() {
         view.addSubview(textView)
         view.addSubview(viewWithChoiceOfLabelColor)
+        view.addGestureRecognizer(swipeToRightRecognizer)
     }
     
     private func  addConstraint() {
@@ -126,7 +133,7 @@ class NoteViewController: UIViewController {
     }
     
     private func showKeyboard() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             self?.textView.becomeFirstResponder()
             self?.rightBarButton.isEnabled = true
         }
@@ -158,7 +165,7 @@ class NoteViewController: UIViewController {
         colorSelectionButton.backgroundColor = mark.getColor()
         
         viewModel?.saveColorMark(mark)
-        UIView.animate(withDuration: 0.5) { [weak self] in
+        UIView.animate(withDuration: 0.3) { [weak self] in
             self?.viewWithChoiceOfLabelColor.alpha = 0
         }
     }
@@ -173,7 +180,7 @@ class NoteViewController: UIViewController {
     
     @IBAction private func pressButtonSelectColor() {
         viewWithChoiceOfLabelColor.isHidden = false
-        UIView.animate(withDuration: 0.5) { [weak self] in
+        UIView.animate(withDuration: 0.3) { [weak self] in
             self?.viewWithChoiceOfLabelColor.alpha = 1
         }
     }
