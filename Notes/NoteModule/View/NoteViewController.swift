@@ -49,7 +49,7 @@ class NoteViewController: UIViewController {
     private lazy var textView: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
-        textView.font = UIFont(name: "Copperplate-Light", size: 20)
+        textView.font = UIFont(name: "ArialMT", size: 18)
         textView.textColor = Constant.Colors.black
         textView.delegate = self
         return textView
@@ -99,7 +99,7 @@ class NoteViewController: UIViewController {
         textView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
         
         viewWithChoiceOfLabelColor.translatesAutoresizingMaskIntoConstraints = false
-        viewWithChoiceOfLabelColor.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        viewWithChoiceOfLabelColor.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         viewWithChoiceOfLabelColor.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 10).isActive = true
     }
     
@@ -126,7 +126,7 @@ class NoteViewController: UIViewController {
     }
     
     private func showKeyboard() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.textView.becomeFirstResponder()
             self?.rightBarButton.isEnabled = true
         }
@@ -158,11 +158,9 @@ class NoteViewController: UIViewController {
         colorSelectionButton.backgroundColor = mark.getColor()
         
         viewModel?.saveColorMark(mark)
-        
-        UIView.animate(withDuration: 0.3) { [weak self] in
+        UIView.animate(withDuration: 0.5) { [weak self] in
             self?.viewWithChoiceOfLabelColor.alpha = 0
         }
-        viewWithChoiceOfLabelColor.isHidden = true
     }
     
     @IBAction private func hideKeyboard() {
@@ -175,7 +173,7 @@ class NoteViewController: UIViewController {
     
     @IBAction private func pressButtonSelectColor() {
         viewWithChoiceOfLabelColor.isHidden = false
-        UIView.animate(withDuration: 0.3) { [weak self] in
+        UIView.animate(withDuration: 0.5) { [weak self] in
             self?.viewWithChoiceOfLabelColor.alpha = 1
         }
     }

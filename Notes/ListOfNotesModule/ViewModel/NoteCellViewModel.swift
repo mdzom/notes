@@ -21,11 +21,7 @@ class NoteCellViewModel: NoteCellViewModelProtocol {
     var text: String {
         let text = note.text
         let arrayOfLines = text.components(separatedBy: "\n")
-        if arrayOfLines.count > 1 {
-            return arrayOfLines[1]
-        } else {
-            return ""
-        }
+        return arrayOfLines.count > 1 ? arrayOfLines[1] : ""
     }
     
     var colorMark: ColorMark {

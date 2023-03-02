@@ -16,10 +16,7 @@ class NoteTableViewCell: UITableViewCell {
             mainTextLabel.text = viewModel?.text
         }
     }
-    
-    
-    
-//MARK: добавить готовое view!!!!!
+
     private lazy var borderView: UIView = {
         let borderColor = Constant.Colors.gray.cgColor
         let view = UIView()
@@ -39,12 +36,15 @@ class NoteTableViewCell: UITableViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = Constant.Colors.black
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        
         return label
     }()
     
     private lazy var mainTextLabel: UILabel = {
         let label = UILabel()
         label.textColor = Constant.Colors.gray
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     

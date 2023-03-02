@@ -14,10 +14,12 @@ class ViewWithChoiceOfLabelColor: UIView {
     private lazy var stackView: UIStackView = {
         let buttons = createAnArrayOfColorPickerButtons()
         let stackView = UIStackView()
-        stackView.axis = .vertical
+        stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
         stackView.spacing = 8
+        stackView.layer.cornerRadius = 8
+        stackView.backgroundColor = Constant.Colors.lighGgray
         buttons.forEach { stackView.addArrangedSubview($0) }
         return stackView
     }()
